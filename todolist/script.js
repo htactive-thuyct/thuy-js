@@ -3,7 +3,7 @@ class ToDoClass {
     this.tasks = JSON.parse(localStorage.getItem("")) || [];
     this.loadTasks();
     this.addEventListener();
-    this.tam;
+    this.index;
     this.perform;
     this.resultCompleted;
     this.resultAcitve;
@@ -18,13 +18,15 @@ class ToDoClass {
     });
   }
 
-  completeTodo(index) {
-    this.tasks[index].isComplete = !this.tasks[index].isComplete;
+  completeTodo(id) {
+    let m = this.tasks.findIndex(item => item.id == id);
+    console.log(m);
+    this.tasks[m].isComplete = !this.tasks[m].isComplete;
     this.loadTasks();
   }
 
   addTask(task) {
-    let newTask = { task: task, isComplete: false };
+    let newTask = { id: toDo.randomId(5), task: task, isComplete: false };
     let parentDiv = document.getElementById("addTask").parentElement;
     if (task === "") {
       parentDiv.classList.add("has-error");
@@ -33,23 +35,29 @@ class ToDoClass {
       this.tasks.push(newTask);
       this.loadTasks();
     }
+    console.log(this.tasks);
   }
 
   deleteTodo(event, id) {
-    //event.preventDefault();
+    let m = this.tasks.findIndex(item => item.id == id);
+    this.index = m;
+    console.log(this.index);
+
     this.perform = {
-      task: this.tasks[id].task,
-      isComplete: this.tasks[id].isComplete
+      id: this.tasks[m].id,
+      task: this.tasks[m].task,
+      isComplete: this.tasks[m].isComplete
     };
-    this.tam = this.tasks.splice(id, 1);
+    console.log(this.perform);
+    this.tasks.splice(m, 1);
     this.loadTasks();
-    console.log(this.tam);
 
     var btn = document.createElement("button");
     btn.innerHTML = "undo";
     document.body.appendChild(btn);
 
     btn.setAttribute("onclick", "toDo.unDo()");
+    btn.setAttribute("id", "button");
     btn.setAttribute("style", "background: green; margin-left: 50%");
     setTimeout(function() {
       btn.remove();
@@ -57,9 +65,23 @@ class ToDoClass {
   }
 
   unDo() {
-    this.tasks.push(this.perform);
+    this.tasks.splice(this.index, 0, this.perform);
+    var btn = document.getElementById("button");
+    btn.remove();
     console.log(this.tasks);
     this.loadTasks();
+  }
+
+  randomId(len) {
+    var rdmString = "";
+    for (
+      ;
+      rdmString.length < len;
+      rdmString += Math.random()
+        .toString(36)
+        .substr(2)
+    );
+    return rdmString.substr(0, len);
   }
 
   addTaskClick() {
@@ -106,50 +128,46 @@ class ToDoClass {
 
   tinhtoan() {
     let tong = this.tasks.length;
-    let complete = (this.resultCompleted / tong) * 100;
-    let active = (this.resultActive / tong) * 100;
-    console.log(complete);
-    console.log(active);
+    let complete = Math.round((this.resultCompleted / tong) * 100);
+    let active = Math.round((this.resultActive / tong) * 100);
+    console.log(" Hoan thanh " + complete + "%");
+    console.log(" Chua Hoan thanh " + active + "%");
+    // var lable = document.createElement("lable");
+    // lable.innerHTML = " Hoan thanh " + complete + "%";
+    // document.body.appendChild(lable);
+
+    // lable.setAttribute("id", "lable");
+    // lable.setAttribute("class", "label label-success");
+    // lable.setAttribute("style", "font-size: 250%;");
+    // setTimeout(function() {
+    //   lable.remove();
+    // }, 5000);
   }
 
-  saveEdit(event, index) {
-    event.preventDefault();
-    let valueEdit = document.getElementById(index).value;
-    this.tasks[index].task = valueEdit;
-    this.tasks[index].isComplete = false;
-    this.loadTasks();
-  }
-  updateToDo(event, index) {
-    event.preventDefault();
-    let displaybtn = document.getElementById(index);
-    this.tasks[index].isComplete = false;
-    displaybtn.disabled = false;
-    displaybtn.focus();
-  }
-
-  generateTaskHtml(task, index) {
+  generateTaskHtml(task, id) {
     return `
            
             <li class="list-group-item checkbox" style ="padding: 3px 11px;">
             
             <div class="row">
                 <div class="col-md-1 col-xs-1 col-lg-1 col-sm-1 checkbox">
-                <label><input id="toggleTaskStatus" type="checkbox" onchange="toDo.completeTodo(${index})" value="" class="" ${
+                <label><input id="toggleTaskStatus" type="checkbox" onchange="toDo.completeTodo('${
+                  task.id
+                }')" value="" class="" ${
       task.isComplete ? "checked" : ""
     }></label>
                 </div>
                 <div class="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text ${
                   task.isComplete ? "complete" : ""
                 }">
-                <input type="text" class="form-control" id="${index}"disabled style="border:none;background: white" value="${
-      task.task
-    }">
+                ${task.task}
                 </div>
+                <div>
                 <a class="functions">
-                
-                <a onClick="toDo.deleteTodo(event, ${index})"><i class="fa fa-trash" ></i></a>
-                <a style= "padding-top: px;" href="" onClick="toDo.updateToDo(event, ${index})"><i class="fa fa-edit" ></i></a>
-                <a style= "padding-top: px;" href="" onClick="toDo.saveEdit(event, ${index})"><i class="fa fa-check" ></i></a>
+                <a onClick="toDo.deleteTodo(event, '${
+                  task.id
+                }')"><i class="fa fa-trash" ></i></a>
+                <a style= "padding-top: px;" href="" onClick="toDo.edit(event, ${id})"><i class="fa fa-edit" ></i></a>            
                 </div>
             </div>
             </li>
