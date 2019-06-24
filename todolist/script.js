@@ -24,6 +24,42 @@ class ToDoClass {
     this.tasks[m].isComplete = !this.tasks[m].isComplete;
     this.loadTasks();
   }
+  completeAll() {
+    for (let i = 0; i < this.tasks.length; i++) {
+      this.tasks[i].isComplete = true;
+    }
+    this.loadTasks();
+
+    console.log(this.tasks);
+  }
+  removeComplete = () => {
+    let a = (this.tasks = this.tasks.filter(t => !t.isComplete));
+    this.loadTasks();
+  };
+
+  updateToDo(event, id) {
+    event.preventDefault();
+    let index = this.tasks.findIndex(item => item.id == id);
+    let displaybtn = document.getElementById(id);
+    this.tasks[index].isComplete = false;
+    displaybtn.disabled = false;
+    displaybtn.focus();
+
+    let update = document.getElementById("update-" + id);
+    update.hidden = true;
+
+    let save = document.getElementById("save-" + id);
+    save.hidden = false;
+  }
+
+  saveEdit(event, id) {
+    event.preventDefault();
+    let index = this.tasks.findIndex(item => item.id == id);
+    let valueEdit = document.getElementById(id).value;
+    this.tasks[index].task = valueEdit;
+    this.tasks[index].isComplete = false;
+    this.loadTasks();
+  }
 
   addTask(task) {
     let newTask = { id: toDo.randomId(5), task: task, isComplete: false };
@@ -40,8 +76,8 @@ class ToDoClass {
 
   deleteTodo(event, id) {
     let m = this.tasks.findIndex(item => item.id == id);
-    this.index = m;
-    console.log(this.index);
+    // this.index = m;
+    // console.log(this.index);
 
     this.perform = {
       id: this.tasks[m].id,
@@ -160,14 +196,27 @@ class ToDoClass {
                 <div class="col-md-10 col-xs-10 col-lg-10 col-sm-10 task-text ${
                   task.isComplete ? "complete" : ""
                 }">
-                ${task.task}
+                <input type="text" class="form-control" id=${
+                  task.id
+                } disabled style=" border:none; background:white" value="${
+      task.task
+    }">
                 </div>
                 <div>
                 <a class="functions">
                 <a onClick="toDo.deleteTodo(event, '${
                   task.id
                 }')"><i class="fa fa-trash" ></i></a>
-                <a style= "padding-top: px;" href="" onClick="toDo.edit(event, ${id})"><i class="fa fa-edit" ></i></a>            
+                <a style= "padding-top: px;" id="update-${
+                  task.id
+                }" onClick="toDo.updateToDo(event, '${
+      task.id
+    }')"><i class="fa fa-pencil" ></i></a>     
+                <a hidden style= "padding-top: px;" id="save-${
+                  task.id
+                }" onClick="toDo.saveEdit(event, '${
+      task.id
+    }')">   <i class="fa fa-check" ></i></a>          
                 </div>
             </div>
             </li>
@@ -177,8 +226,10 @@ class ToDoClass {
   loadTasks() {
     let taskHtml = this.tasks.reduce(
       (html, task, index) => (html += this.generateTaskHtml(task, index)),
+
       ""
     );
+
     document.getElementById("taskList").innerHTML = taskHtml;
 
     localStorage.setItem("", JSON.stringify(this.tasks));

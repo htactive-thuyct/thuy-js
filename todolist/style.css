@@ -33,9 +33,9 @@ body {
 
 .functions {
   display: flex;
-  padding-top: 11px;
+  padding-top: 13px;
 }
 .functions a {
   color: red;
-  padding: 2px;
+  padding: 5px;
 }
