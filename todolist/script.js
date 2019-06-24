@@ -76,8 +76,8 @@ class ToDoClass {
 
   deleteTodo(event, id) {
     let m = this.tasks.findIndex(item => item.id == id);
-    // this.index = m;
-    // console.log(this.index);
+    this.index = m;
+    console.log(this.index);
 
     this.perform = {
       id: this.tasks[m].id,
@@ -86,25 +86,17 @@ class ToDoClass {
     };
     console.log(this.perform);
     this.tasks.splice(m, 1);
+
+    document.getElementById("undo").style.visibility = "visible";
     this.loadTasks();
-
-    var btn = document.createElement("button");
-    btn.innerHTML = "undo";
-    document.body.appendChild(btn);
-
-    btn.setAttribute("onclick", "toDo.unDo()");
-    btn.setAttribute("id", "button");
-    btn.setAttribute("style", "background: green; margin-left: 50%");
     setTimeout(function() {
-      btn.remove();
-    }, 3000);
+      document.getElementById("undo").style.visibility = "hidden";
+    }, 5000);
   }
 
   unDo() {
     this.tasks.splice(this.index, 0, this.perform);
-    var btn = document.getElementById("button");
-    btn.remove();
-    console.log(this.tasks);
+    document.getElementById("undo").style.visibility = "hidden";
     this.loadTasks();
   }
 
@@ -204,9 +196,10 @@ class ToDoClass {
                 </div>
                 <div>
                 <a class="functions">
-                <a onClick="toDo.deleteTodo(event, '${
+                <a  onClick="toDo.deleteTodo(event, '${
                   task.id
                 }')"><i class="fa fa-trash" ></i></a>
+               
                 <a style= "padding-top: px;" id="update-${
                   task.id
                 }" onClick="toDo.updateToDo(event, '${
