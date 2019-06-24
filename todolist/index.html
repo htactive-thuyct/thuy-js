@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Title Page</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand">ToDo List</span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="content-area row">
+        <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2"></div>
+
+        <div class="col-md-8 col-xs-8 col-lg-8 col-sm-8">
+          <h2>ToDo List</h2>
+
+          <div class="row input-area">
+            <div class="form-group col-md-9">
+              <input
+                type="text"
+                placeholder="New Task"
+                class="form-control"
+                id="addTask"
+              />
+            </div>
+            <div class="form-group col-md-1">
+              <button class="btn btn-primary" onclick="toDo.addTaskClick()">
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn .btn" onclick="toDo.loadTasks()">
+              All
+            </button>
+            <button class="btn .btn" onclick="toDo.selectCompleted()">
+              Done
+            </button>
+            <button class="btn .btn" onclick="toDo.selectActive()">
+              Not yet
+            </button>
+            <button class="btn .btn" onclick="toDo.tinhtoan()">
+              Ratio
+            </button>
+            <button class="btn .btn" onclick="toDo.completeAll()">
+              Select All
+            </button>
+            <button class="btn .btn" onclick="toDo.removeComplete()">
+              Clear Complete
+            </button>
+          </div>
+
+          <br />
+          <ul class="list-group" id="taskList"></ul>
+        </div>
+
+        <div class="col-md-2 col-xs-2 col-lg-2 col-sm-2"></div>
+      </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+
+    <script src="./script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
