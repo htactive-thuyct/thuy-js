@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Title Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header" style=" text-align: center">
+        <h1>QUẢN LÝ SINH VIÊN</h1>
+      </div>
+
+      <div class="add">
+        <div class="row">
+          <form
+            action=""
+            method="POST"
+            role="form"
+            style=" margin-left: 15%;margin-top: 50px; width: 70%; display: none"
+            id="add"
+          >
+            <div class="form-group">
+              <label for="">Tên sinh viên</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Input field"
+              />
+            </div>
+            <div class="form-group">
+              <label for="">Lớp</label>
+              <input
+                type="text"
+                class="form-control"
+                id="class"
+                placeholder="Input field"
+              />
+            </div>
+
+            <button
+              style="margin-left: 50%"
+              type="button"
+              onclick="addStudent()"
+              class="btn btn-primary"
+            >
+              Add
+            </button>
+          </form>
+          <form
+            action=""
+            method="POST"
+            role="form"
+            style="margin-left: 15%;margin-top: 50px; width: 70%;"
+            id="edit"
+          >
+            <div class="form-group">
+              <label for="">Tên sinh viên</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Input field"
+              />
+            </div>
+            <div class="form-group">
+              <label for="">Lớp</label>
+              <input
+                type="text"
+                class="form-control"
+                id="class"
+                placeholder="Input field"
+              />
+            </div>
+
+            <button
+              style="margin-left: 50%"
+              type="button"
+              onclick="edit()"
+              class="btn btn-primary"
+            >
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="show">
+        <table
+          style="margin-left: 15%; width: 70%; margin-top: 50px"
+          class="table table-hover"
+          id="myTable"
+        ></table>
+      </div>
+    </div>
+
+    <script src="./js.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
