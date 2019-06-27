@@ -1,9 +1,4 @@
-let students = [
-  { id: "jeruy", name: "Thuy", class: "PNV20A" },
-  { id: "je2uy", name: "Thuong", class: "PNV20B" },
-  { id: "je1uy", name: "Nhung", class: "PNV19A" }
-];
-
+let students = JSON.parse(localStorage.getItem("sinhvien"));
 let randomId = len => {
   var rdmString = "";
   for (
@@ -25,7 +20,9 @@ let randomClass = () => {
   }
   return temp;
 };
-
+let showAdd = () => {
+  document.getElementById("add").style.display = "block";
+};
 let addStudent = () => {
   let newStudent = {
     id: randomId(5),
@@ -34,54 +31,91 @@ let addStudent = () => {
   };
 
   students.push(newStudent);
+  loadStudent();
+
+  // students.push(newStudent);
   console.log(students);
-  showStudent();
 };
-let edit = () => {
-  var r = confirm("Bạn có muốn chỉnh sửa");
-  if (r == true) {
-    document.getElementById("add").style.display = "none";
-    document.getElementById("edit").style.display = "block";
-  } else {
-  }
+
+let search = () => {
+  var inputSearch = document.getElementById("inputSearch").value;
 };
-let showStudent = () => {
-  document.getElementById("add").style.display = "block";
-  document.getElementById("edit").style.display = "none";
-  var col = [];
-  for (var i = 0; i < students.length; i++) {
-    for (var key in students[i]) {
-      if (col.indexOf(key) === -1) {
-        col.push(key);
-      }
-    }
-  }
-  // CREATE DYNAMIC TABLE.
-  var table = document.createElement("table");
+search();
+let updateStudent = id => {
+  let index = students.findIndex(item => item.id == id);
+  console.log(index);
+  let lbId = document.getElementById(id + "-id");
+  let lbName = document.getElementById(id + "-name");
+  let lbClass = document.getElementById(id + "-class");
+  lbId.removeAttribute("readonly");
+  lbName.removeAttribute("readonly");
+  lbClass.removeAttribute("readonly");
+  focus();
 
-  // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+  let update = document.getElementById("update-" + id);
+  update.hidden = true;
 
-  var tr = table.insertRow(-1); // TABLE ROW.
-
-  for (var i = 0; i < col.length; i++) {
-    var th = document.createElement("th"); // TABLE HEADER.
-    th.innerHTML = col[i];
-    tr.appendChild(th);
-  }
-
-  // ADD JSON DATA TO THE TABLE AS ROWS.
-  for (let i = 0; i < students.length; i++) {
-    tr = table.insertRow(-1);
-    for (let j = 0; j < col.length; j++) {
-      var tabCell = tr.insertCell(-1);
-      tabCell.innerHTML = students[i][col[j]];
-    }
-    tr.addEventListener("click", edit);
-  }
-
-  // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-  var divContainer = document.getElementById("myTable");
-  divContainer.innerHTML = "";
-  divContainer.appendChild(table);
+  let save = document.getElementById("save-" + id);
+  save.hidden = false;
 };
-showStudent();
+
+let saveStudent = id => {
+  let index = students.findIndex(item => item.id == id);
+  let vlID = document.getElementById(id + "-id").value;
+  let vlName = document.getElementById(id + "-name").value;
+  let vlClass = document.getElementById(id + "-class").value;
+  students[index].id = vlID;
+  students[index].name = vlName;
+  students[index].class = vlClass;
+  loadStudent();
+};
+
+let deleteStudent = id => {
+  let index = students.findIndex(item => item.id == id);
+  console.log(index);
+
+  students.splice(index, 1);
+  loadStudent();
+};
+let showStudent = hs => {
+  return `
+  <tr>
+  <td style="hieght: 20px"> <input type="text" class="form-control" id="${
+    hs.id
+  }-id" readonly style="border:none;background-color:#fff" value=" ${
+    hs.id
+  }"></td>
+  <td> <input type="text" class="form-control" id="${
+    hs.id
+  }-name" readonly style="border:none;background-color:#fff" value="${
+    hs.name
+  }"> </td>
+  <td> <input type="text" class="form-control" id="${
+    hs.id
+  }-class" readonly style="border:none;background-color:#fff" value="${
+    hs.class
+  }"></td>
+  <td><a href="#" id="update-${hs.id}"  onclick="updateStudent('${
+    hs.id
+  }')"><i class="fa fa-pencil" style="color:#634416"></i></a>&nbsp&nbsp
+  <a href="#" id="save-${hs.id}" hidden onclick ="saveStudent('${
+    hs.id
+  }')"><i class="fa fa-check" style="color:green"></i></a>&nbsp&nbsp
+  <a href="#" onclick ="deleteStudent('${
+    hs.id
+  }')"><i class="fa fa-trash" style="color:red"></i></a>&nbsp&nbsp
+  </td>
+</tr>
+  `;
+};
+let loadStudent = () => {
+  let studentHtml = students.reduce(
+    (html, hs, index) => (html += showStudent(hs, index)),
+    ""
+  );
+  document.getElementById("student-body").innerHTML = studentHtml;
+
+  // document.getElementById("edit").style.display = "none";
+  localStorage.setItem("sinhvien", JSON.stringify(students));
+};
+loadStudent();
